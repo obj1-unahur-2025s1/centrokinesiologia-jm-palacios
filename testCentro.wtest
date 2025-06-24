@@ -1,0 +1,112 @@
+import centro.*
+
+describe "Tests de Centro de Rehabielitacion" {
+  const leonardo = new Paciente(edad=40, fortalezaM=20, dolor=10)
+  const milena = new Paciente(edad=3, fortalezaM=50, dolor=30)
+  const magne1 =new Magneto()
+  const bici1 = new Bicicleta()
+  const mini1 = new MiniTramp()
+  method initialize(){
+    leonardo.asignarEnRutina(bici1)
+    leonardo.asignarEnRutina(mini1)
+    leonardo.asignarEnRutina(bici1)
+    leonardo.asignarEnRutina(magne1)
+    milena.asignarEnRutina(magne1)
+    milena.asignarEnRutina(bici1)
+  }
+
+  test "Leonardo puede usar los tres aparatos" {
+    assert.that(leonardo.puedeUsarAparato(magne1))
+    assert.that(leonardo.puedeUsarAparato(bici1))
+    assert.that(leonardo.puedeUsarAparato(mini1))
+  }
+  test "Milena puede usar solo el magneto y no los otros aparatos" {
+    assert.that(milena.puedeUsarAparato(magne1))
+    assert.notThat(milena.puedeUsarAparato(bici1))
+    assert.notThat(milena.puedeUsarAparato(mini1))
+  }
+  test "Leonardo luego de usar magneto queda con dolor 9" {
+    leonardo.usarAparato(magne1)
+    assert.equals(9, leonardo.dolor())    
+  }
+  test "Milena luego de usar magneto queda con dolor 27" {
+    milena.usarAparato(magne1)
+    assert.equals(27, milena.dolor())
+  }
+  test "Loenardo  bici1 le queda dolor 6 y fortaleza 23" {
+    leonardo.usarAparato(bici1)
+    assert.equals(6, leonardo.dolor())
+    assert.equals(23, leonardo.fortalezaM())
+  }
+  test "Leonardo luego de usar mini1 le queda de fortaleza 24" {
+    leonardo.usarAparato(mini1)
+    assert.equals(24, leonardo.fortalezaM())
+  }
+  test "Leonardo puede hacer la rutina asignada" {
+    assert.that(leonardo.puedeRealizarRutina())
+  }
+  test "Leonardo luego de hacer la rutina su dolor es 1,8 y su fortaleza es 30" {
+    leonardo.realizarSesion()
+    assert.equals(1.8, leonardo.dolor())
+    assert.equals(30, leonardo.fortalezaM())
+  }
+  test "Milena no puede hacer la rutina" {
+    assert.notThat(milena.puedeRealizarRutina())
+  }
+}
+describe "Test parte 3" {
+  const nicolas = new Resistente (edad=40, dolor=10, fortalezaM=20)
+  const victoria = new Caprichoso (edad=30, dolor=10, fortalezaM=40)
+  const julian = new Caprichoso (edad=20, dolor=54, fortalezaM=50)
+  const zoe = new RapidaRecuperacion( edad=50, dolor=14, fortalezaM=40)
+  const magne1 =new Magneto(color = 'verde')
+  const bici1 = new Bicicleta()
+  const mini1 = new MiniTramp()
+  const bici2 = new Bicicleta(color = 'rojo')
+  method initialize(){
+    nicolas.asignarEnRutina(bici1)
+    nicolas.asignarEnRutina(mini1)
+    nicolas.asignarEnRutina(bici1)
+    nicolas.asignarEnRutina(magne1)
+    victoria.asignarEnRutina(bici1)
+    victoria.asignarEnRutina(mini1)
+    victoria.asignarEnRutina(bici1)
+    victoria.asignarEnRutina(magne1)
+    julian.asignarEnRutina(bici2)
+    julian.asignarEnRutina(magne1)
+    julian.asignarEnRutina(bici1)
+    zoe.asignarEnRutina(bici1)
+    zoe.asignarEnRutina(mini1)
+    zoe.asignarEnRutina(bici1)
+    zoe.asignarEnRutina(magne1)
+ }
+  
+  test "Nicolas puede hacer la rutina" {
+    assert.that(nicolas.puedeRealizarRutina())
+  }
+  test "nicolas luego de hacer su rutina su dolor es 1,8 u su fortaleza es 34" {
+    nicolas.realizarSesion()
+    assert.equals(1.8, nicolas.dolor())
+    assert.equals(34, nicolas.fortalezaM())
+  }
+  test "Victoria no puede realizar su rutina" {
+    assert.notThat(victoria.puedeRealizarRutina())
+  }
+  test "Julian puede hacer la rutina" {
+    assert.that(julian.puedeRealizarRutina())
+  }
+  test "Julian luego de hacer su rutina su dolor es 29,3 u su fortaleza es 62" {
+    julian.realizarSesion()
+    assert.equals(29.3, julian.dolor())
+    assert.equals(62, julian.fortalezaM())
+  }
+  test "Zoe puede hacer la rutina" {
+    assert.that(zoe.puedeRealizarRutina())
+  }
+  test "Despues de asignar recuperacion 2, zoe luego de la rutina su dolor es 3,4 y fortaleza es 51" {
+    zoe.nuevaRecuperacion(2)
+    zoe.realizarSesion()
+    assert.equals(3.4, zoe.dolor())
+    assert.equals(51, zoe.fortalezaM())
+  }
+}
